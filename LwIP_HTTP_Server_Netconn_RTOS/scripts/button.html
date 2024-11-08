@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrôle de la LED3 et du Bouton</title>
+    <script>
+        function sendRequest(url, callback) {
+            fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error('Erreur lors de la requête');
+                    }
+                })
+                .then(text => {
+                    console.log(text);
+                    if (callback) callback(text);
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    if (callback) callback(null);
+                });
+        }
+
+        function turnOnLed() {
+            sendRequest('http://192.168.0.11/STM32F7xx_files/LED_ON');
+        }
+
+        function turnOffLed() {
+            sendRequest('http://192.168.0.11/STM32F7xx_files/LED_OFF');
+        }
+
+        function updateButtonStatus() {
+            sendRequest('http://192.168.0.11/STM32F7xx_files/BUTTON_STATUS', function(status) {
+                if (status === 'Button is pressed') {
+                    document.body.style.backgroundColor = 'green';
+                } else {
+                    document.body.style.backgroundColor = 'red';
+                }
+            });
+        }
+
+        setInterval(updateButtonStatus, 1000); // Mettre à jour l'état du bouton toutes les secondes
+    </script>
+</head>
+<body>
+    <h1>Contrôle de la LED3 et du Bouton</h1>
+    <button onclick="turnOnLed()">Allumer la LED</button>
+    <button onclick="turnOffLed()">Éteindre la LED</button>
+</body>
+</html>

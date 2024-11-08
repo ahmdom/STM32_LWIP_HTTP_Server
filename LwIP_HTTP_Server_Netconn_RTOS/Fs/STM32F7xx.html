@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Contrôle de la LED3</title>
+<script>
+    function sendRequest(url) {
+        fetch(url)
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Erreur lors de la requête');
+                }
+            })
+            .then(text => {
+                console.log(text);
+                alert(text);
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la requête');
+            });
+    }
+
+    function turnOnLed() {
+        sendRequest('http://192.168.0.11/STM32F7xx_files/LED_ON');
+    }
+
+    function turnOffLed() {
+        sendRequest('http://192.168.0.11/STM32F7xx_files/LED_OFF');
+    }
+</script>
+</head>
+<body style="text-align: center;" lang="EN-US" link="blue" vlink="blue">
+    <h1>Contrôle de la LED3</h1>
+    <button onclick="turnOnLed()">Allumer la LED</button>
+    <button onclick="turnOffLed()">Éteindre la LED</button>
+</body>
+</html>
